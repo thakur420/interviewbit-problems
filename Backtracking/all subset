@@ -1,0 +1,39 @@
+/* Given a set of distinct integers, S, return all possible subsets.
+ Note:
+  Elements in a subset must be in non-descending order.
+  The solution set must not contain duplicate subsets.
+  Also, the subsets should be sorted in ascending ( lexicographic ) order.
+  The list is not necessarily sorted.
+  */
+
+
+
+
+void subset(vector<int> &A,vector<vector<int> > &B,int k,int index){
+    int n = A.size();
+    if(k == n)
+        return;
+    static vector<int> set;
+    for(int i = k;i < n; i++){
+        set.push_back(A[i]);
+        B.push_back(set);
+        subset(A,B,i+1,index+1);
+        set.pop_back();
+        k--;
+    }
+    
+}
+void print(vector<int> &A){
+    for(int i=0;i<A.size();i++)
+        cout<<A[i]<<" ";
+    cout<<endl;
+}
+vector<vector<int> > Solution::subsets(vector<int> &A) {
+    vector<vector<int> > B;
+    B.push_back({});
+    sort(A.begin(),A.end());
+    subset(A,B,0,1);
+    /*for(int i = 0;i < B.size();i++)
+        print(B[i]);*/
+    return B;
+}
