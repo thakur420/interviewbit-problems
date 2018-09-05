@@ -1,0 +1,41 @@
+/* Given a string s, partition s such that every string of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+For example, given s = "aab",
+
+Return
+      [
+       ["a","a","b"]
+       ["aa","b"],
+     ]
+    
+problem link :https://www.interviewbit.com/courses/programming/topics/backtracking/
+*/
+
+bool ispalindrome(string A){
+    string B = A;
+    reverse(B.begin(),B.end());
+    return (B==A);
+}
+void palindrome_partition(string &A,vector<vector<string>> &B,vector<string> &C,int index){
+    if(index ==  A.length()){
+        B.push_back(C);
+        return ;
+    }
+    for(int i = 0;i < A.length()-index;i++){
+        if(ispalindrome(A.substr(index,i+1))){
+            C.push_back(A.substr(index,i+1));
+            palindrome_partition(A,B,C,index+i+1);
+            C.pop_back();
+        }
+    }
+    
+}
+vector<vector<string> > Solution::partition(string A) {
+   vector<vector<string>>B;
+   vector<string> C;
+   palindrome_partition(A,B,C,0);
+   return B;
+}
+
