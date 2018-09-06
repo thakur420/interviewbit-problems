@@ -1,0 +1,77 @@
+/* Write a program to solve a Sudoku puzzle by filling the empty cells.
+Empty cells are indicated by the character '.' 
+You may assume that there will be only one unique solution.
+
+Input:[[53..7....], [6..195...], [.98....6.], [8...6...3], [4..8.3..1], [7...2...6], [.6....28.], [...419..5], [....8..79]]
+Output:[[534678912], [672195348], [198342567], [859761423], [426853791], [713924856], [961537284], [287419635], [345286179]]
+*/
+bool isSafe(vector<vector<char> > &A,int row,int col,char val){
+    for(int i = 0;i<A.size();i++)
+        if(i!=row && A[i][col]==val)return false;
+    for(int i =0;i<A[0].size();i++)
+        if(i!= col && A[row][i]==val)return false;
+    int sq_rt2 = sqrt(A.size());
+    int top = (row/sq_rt2)*sq_rt2,left = (col/sq_rt2)*sq_rt2;
+    for(int i = top;i<top+sq_rt2;i++)
+        for(int j = left;j<left+sq_rt2;j++)
+            if(i != row && j != col && A[i][j] == val)return false;
+    return true;
+}
+void print(vector<vector<char> > &A){
+    cout<<"array"<<endl;
+    for(int i = 0;i<A.size();i++){
+        for(int j = 0;j<A[0].size();j++)
+            cout<<A[i][j];
+        cout<<endl;
+    }
+       
+}
+void sudoku(vector<vector<char> > &A,int row,int col){
+    if(row >= A.size() || col >= A[0].size()){
+        //print(A);
+        return ;
+    }
+    for(int k = 1;k < A.size()+1;k++){
+        A[row][col]=k+'0';
+        //cout<<k<<" "<<isSafe(A,row,col,k+'0')<<endl;
+        if(isSafe(A,row,col,k+'0')){
+            int prevcol = col,prevrow = row;
+            while(row<A.size()&&A[row][col]!='.'){
+                if(col==A[0].size()-1)
+                    row++;
+                col=(col+1)%A[0].size();
+            }
+            //cout<<"(row,col):"<<row<<col<<endl;
+            sudoku(A,row,col);
+            int i,j;
+            for(i=0;i<A.size();i++)
+                for(j=0;j<A[0].size();j++)
+                    if(A[i][j]=='.')
+                        break;
+            if(i==A.size() && j==A[0].size())
+                break;
+            col = prevcol;
+            row = prevrow;
+        }
+        A[row][col]='.';
+        //print(A);
+    }
+   
+}
+void Solution::solveSudoku(vector<vector<char> > &A) {
+   int row = 0,col =0;
+   for(int i = 0;i<A.size();i++){
+       int j = 0;
+        for(;j<A[0].size();j++)
+            if(A[i][j] =='.'){
+                row = i;
+                col = j;
+                break;
+            }
+        if(A[i][j] =='.') 
+            break;
+   }
+   //cout<<row<<" "<<col<<endl;   
+   //vector<vector<char>>
+   sudoku(A,row,col);
+}
