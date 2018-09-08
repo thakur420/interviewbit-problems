@@ -1,0 +1,40 @@
+/* Given three sorted arrays A, B and Cof not necessarily same sizes.
+
+Calculate the minimum absolute difference between the maximum and minimum number from the triplet a, b, c such that a, b, c belongs arrays A, B, C respectively.
+i.e. minimize | max(a,b,c) - min(a,b,c) |.
+
+
+Example :
+Input:
+A : [ 1, 4, 5, 8, 10 ]
+B : [ 6, 9, 15 ]
+C : [ 2, 3, 6, 6 ]
+
+Output:
+1
+Explanation: We get the minimum difference for a=5, b=6, c=6 as | max(a,b,c) - min(a,b,c) | = |6-5| = 1.
+
+problem link :https://www.interviewbit.com/problems/minimize-the-absolute-difference/
+**/
+int Solution::solve(vector<int> &A, vector<int> &B, vector<int> &C) {
+    int p = A.size(),q = B.size(),r = C.size(),result = INT_MAX;
+    int i =0, j = 0, k =0, a, b, c;
+    while(i < p || j < q || k < r){
+        if(i < p) a = A[i];
+        if(j < q) b = B[j];
+        if(k < r) c = C[k];
+        int min_diff = abs(max(max(a,b),c)-min(min(a,b),c));
+        if(min_diff<result)
+            result = min_diff;
+        int z = min(min(a,b),c);
+        if((i == p && a == z)||(j == q && b == z)||(k == r && c == z))
+            break;
+        if(i < p && a == z)
+            i++;
+        if(j < q && b == z)
+            j++;
+        if(k < r && c == z)
+            k++;
+    }
+    return result;
+}
