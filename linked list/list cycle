@@ -1,0 +1,43 @@
+/* Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+Try solving it using constant additional space.
+
+Example :
+
+Input : 
+                  ______
+                 |     |
+                 \/    |
+        1 -> 2 -> 3 -> 4
+
+Return the node corresponding to node 3. 
+problem link :https://www.interviewbit.com/problems/list-cycle/
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ListNode* Solution::detectCycle(ListNode* A) {
+    ListNode *slowptr = A,*fastptr = A;
+    while(fastptr != nullptr){
+        slowptr = slowptr->next;
+        fastptr = fastptr->next;
+        if(fastptr != nullptr)
+            fastptr = fastptr->next;
+        if(slowptr == fastptr)
+            break;
+    }
+    slowptr = A;
+    while(fastptr != nullptr){
+        if(slowptr == fastptr)
+            return slowptr;
+        slowptr = slowptr->next;
+        fastptr = fastptr->next;
+    }
+    return nullptr;
+}
