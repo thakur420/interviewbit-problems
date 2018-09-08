@@ -1,0 +1,57 @@
+/*Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+push(x) – Push element x onto stack.
+pop() – Removes the element on top of the stack.
+top() – Get the top element.
+getMin() – Retrieve the minimum element in the stack.
+Note that all the operations have to be constant time operations.
+
+Questions to ask the interviewer :
+Q: What should getMin() do on empty stack? 
+A: In this case, return -1.
+
+Q: What should pop do on empty stack? 
+A: In this case, nothing. 
+
+Q: What should top() do on empty stack?
+A: In this case, return -1
+*/
+
+#include<bits/stdc++.h>
+vector<int>st_list;
+vector<int>min_list;
+MinStack::MinStack(){
+    st_list.clear();
+    min_list.clear();
+}
+
+void MinStack::push(int x) {
+   if((st_list.empty()?false:st_list.back()<x) && (min_list.empty()?true:min_list.back()>st_list.back()))
+        min_list.push_back(st_list.back());
+    st_list.push_back(x);
+}
+
+void MinStack::pop() {
+    if(st_list.empty())
+        return;
+    if(!min_list.empty() && (min_list.back() == st_list.back()))
+        min_list.pop_back();
+    st_list.pop_back();
+
+}
+
+int MinStack::top() {
+    if(st_list.empty())
+        return -1;
+    return st_list.back();
+}
+
+int MinStack::getMin() {
+    if(st_list.empty())
+        return -1;
+    else if(min_list.empty())
+        return st_list.back();
+    return min(min_list.back(),st_list.back());
+}
+
+
