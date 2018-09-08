@@ -1,0 +1,60 @@
+/* Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+
+If the fractional part is repeating, enclose the repeating part in parentheses.
+
+Example :
+
+Given numerator = 1, denominator = 2, return "0.5"
+Given numerator = 2, denominator = 1, return "2"
+Given numerator = 2, denominator = 3, return "0.(6)" */
+
+string Solution::fractionToDecimal(int A, int B) {
+    string result;
+    if((A<0 || B<0)&&(A>0|| B>0))
+        result.push_back('-');
+    long long a=A,b=B;
+    if(A != -2147483648)a = abs(A);
+    else a = 2147483648;
+    if(B != -2147483648)b = abs(B);
+    else b = 2147483648;
+    if(a==0 || a >= b){
+        result.append(to_string(a/b));
+        if(a%b==0)
+            return result;
+        a = a%b;
+    }
+    else
+        result.push_back('0');
+    result.push_back('.');
+    unordered_map<long long,int> mod;
+    long long R = a%b;
+    mod.insert(make_pair(R,result.length()));
+    while(true){
+        int i =1;
+        while(a*pow(10,i)<b){
+            i++;
+            result.push_back('0');
+        }
+        a *= pow(10,i);
+        result.push_back(a/b+'0');
+        R = a%b;
+        if(mod.find(R) != mod.end()){
+            int end = result.length()-1;
+            while(result[mod[R]-1]==result[end]){
+                mod[R]--;
+                end--;
+            }
+            result.insert(result.begin()+mod[R],'(');
+            result.insert(result.begin()+end+2,')');
+            while(end++ < result.length()-3)
+                result.pop_back();
+            break;
+        }
+        else
+            mod.insert(make_pair(R,result.length()));
+        if(a%b==0)
+            break;
+        a = a%b;
+    }
+    return result;
+}
