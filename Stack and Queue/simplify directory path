@@ -4,6 +4,7 @@ Examples:
 
 path = "/home/", => "/home"
 path = "/a/./b/../../c/", => "/c"
+problem link :https://www.interviewbit.com/problems/simplify-directory-path/
 */
 
 string Solution::simplifyPath(string A) {
