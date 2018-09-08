@@ -1,0 +1,52 @@
+/* Given an array, find the nearest smaller element G[i] for every element A[i] in the array such that
+the element has an index smaller than i.
+
+More formally,
+G[i] for an element A[i] = an element A[j] such that 
+    j is maximum possible AND 
+    j < i AND
+    A[j] < A[i]
+    
+Elements for which no smaller element exist, consider next smaller element as -1.
+
+Example:
+Input : A : [4, 5, 2, 10, 8]
+Return : [-1, 4, -1, 2, 2]
+*/
+
+vector<int> Solution::prevSmaller(vector<int> &A) {
+   /* int n = A.size(),min;
+    vector<int> smaller(n);
+    smaller[0] = -1;
+    min = A[0];
+    for(int i= 1;i < n;i++){
+        if(A[i] <= min)
+            min = A[i];
+        for(int j = i-1;j >= 0; j--)
+            if(A[i] <= min){
+                smaller[i] = -1;
+                break;
+            }
+            else if(A[j] < A[i]){
+                smaller[i] = A[j];
+                break;
+            }
+    }
+    return smaller;*/
+     vector<int> ans;
+    int len = A.size();
+    int min = A[0], j;
+    ans.push_back(-1);
+    for (int i=1; i<len; i++) {
+        if (A[i] <= min) {
+            ans.push_back(-1);
+            min = A[i];
+        } else {
+            j = i;
+            while(A[j--] >= A[i]);
+            ans.push_back(A[j+1]);
+        }
+    }
+    return ans;
+}
+
