@@ -1,0 +1,31 @@
+/**
+You are given a string. The only operation allowed is to insert characters in the beginning of the string. 
+How many minimum characters are needed to be inserted to make the string a palindrome string
+
+Example:
+Input: ABC
+Output: 2
+Input: AACECAAAA
+Output: 2
+problem link : https://www.interviewbit.com/problems/minimum-characters-required-to-make-a-string-palindromic/
+**/
+
+
+int isPalindrome(string &A,int high){
+    int low=0;
+    while(low<=high){
+        if(A[low]!=A[high])
+            return 0;
+        else{
+            low++;
+            high--;
+        }
+    }
+    return 1;
+}
+int Solution::solve(string A) {
+    for(int i=A.length()-1;i>=0;i--){
+        if(isPalindrome(A,i))
+            return A.length()-i-1;
+    }
+}
