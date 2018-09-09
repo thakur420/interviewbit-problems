@@ -1,0 +1,32 @@
+/* Given an array of strings, return all groups of strings that are anagrams. Represent a group by a list of integers representing the index in the original list. Look at the sample case for clarification.
+
+ Anagram : a word, phrase, or name formed by rearranging the letters of another, such as 'spar', formed from 'rasp' 
+ Note: All inputs will be in lower-case. 
+
+Example :
+Input : cat dog god tca
+Output : [[1, 4], [2, 3]]
+problem link :https://www.interviewbit.com/problems/anagrams/
+*/
+
+vector<vector<int> > Solution::anagrams(const vector<string> &A) {
+    vector<vector<int> > result;
+    vector<string> str = A;
+    for(int i =0;i < A.size();i++)
+        sort(str[i].begin(),str[i].end());
+    vector<int> index;
+    unordered_set<string> store;
+    for(int i = 0;i < A.size();i++){
+        index.clear();
+        if(store.find(str[i]) != store.end())
+            continue;
+        store.insert(str[i]);
+        index.push_back(i+1);
+        for(int j = i+1;j < A.size();j++){
+            if(str[i]==str[j])
+                index.push_back(j+1);
+        }
+        result.push_back(index);
+    }
+    return result;
+}
