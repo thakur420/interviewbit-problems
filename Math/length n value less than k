@@ -1,0 +1,59 @@
+/**
+Given a set of digits (A) in sorted order, find how many numbers of length B are possible whose value is less than number C.
+ NOTE: All numbers can only have digits from the given set. 
+ 
+Examples:
+	Input:
+	  0 1 5  
+	  1  
+	  2  
+	Output:  
+	  2 (0 and 1 are possible)  
+	Input:
+	  0 1 2 5  
+	  2  
+	  21  
+	Output:
+	  5 (10, 11, 12, 15, 20 are possible)
+ 
+ Constraints:
+    1 <= B <= 9, 0 <= C <= 1e9 & 0 <= A[i] <= 9
+    
+ problem link : https://www.interviewbit.com/problems/numbers-of-length-n-and-value-less-than-k/
+ **/
+ 
+ 
+ int Solution::solve(vector<int> &A, int B, int C) {
+    string num = to_string(C);
+    int n = A.size(),count=0,len=num.length(),isexist=1,tot_sum=0;
+    if(B>len)
+        return 0;
+    if(B<len){
+        if(B==1)
+            return n;
+        else{
+            for(int i=0;i<n;i++)
+                if(A[i]!=0)
+                    count++;
+            return count*pow(n,B-1);                    
+        }
+    }
+    for(int i=0;num[i]!='\0';i++)
+        if(isexist){
+            isexist=0;
+            for(int j=0;j<n;j++){
+                if((num[i]-'0')==A[j])
+                    isexist=1;
+                if(i==0&&A[j]!=0&&A[j]<(num[i]-'0'))
+                     count++;
+                else if(i!=0&&A[j]<(num[i]-'0'))
+                    count++;
+            }
+            if(n!=0&&B==1)
+                count++;
+            tot_sum+=count*pow(n,len-1-i);
+            count=0; 
+        }
+    return tot_sum;
+}
+
