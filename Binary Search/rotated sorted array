@@ -1,0 +1,47 @@
+/**
+Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+(i.e., 0 1 2 4 5 6 7  might become 4 5 6 7 0 1 2 ).
+You are given a target value to search. If found in the array, return its index, otherwise return -1.
+You may assume no duplicate exists in the array.
+
+Input : [4 5 6 7 0 1 2] and target = 4
+Output : 0
+problem link : https://www.interviewbit.com/problems/rotated-sorted-array-search/
+
+**/
+
+int bin_search(const vector<int> &A,int B,int low,int high){
+   while(low<=high){
+        int mid=(low+high)/2;
+        if(A[mid]==B)
+            return mid;
+        else if(A[mid]>B)
+            high=mid-1;
+        else
+            low=mid+1;
+    }
+    return -1;
+}
+int Solution::search(const vector<int> &A, int B) {
+    int low=0,n=A.size(),high=n-1,mid,min_pos;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(A[mid]<A[(mid+1)%n]&&A[mid]<A[(n+mid-1)%n]){
+            min_pos=mid;
+            break;
+        }
+        else if(A[mid]<A[high])
+            high=mid-1;
+        else
+            low=mid+1;
+    }
+    //cout<<"mid = "<<min_pos<<endl;
+    if(A[min_pos]==B)
+        return min_pos;
+    int ind; 
+    if((ind = bin_search(A,B,0,min_pos-1))!=-1)
+        return ind;
+    return bin_search(A,B,min_pos,n-1);
+}
+
+
