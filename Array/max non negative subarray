@@ -1,0 +1,57 @@
+/**
+Find out the maximum sub-array of non negative numbers from an array.
+The sub-array should be continuous. That is, a sub-array created by choosing the second and fourth element and 
+skipping the third element is invalid.
+
+Maximum sub-array is defined in terms of the sum of the elements in the sub-array. Sub-array A is greater than 
+sub-array B if sum(A) > sum(B).
+
+Example:
+
+A : [1, 2, 5, -7, 2, 3]
+The two sub-arrays are [1, 2, 5] [2, 3].
+The answer is [1, 2, 5] as its sum is larger than [2, 3]
+
+NOTE: If there is a tie, then compare with segment's length and return segment which has maximum length
+NOTE 2: If there is still a tie, then return the segment with minimum starting index
+
+problem link : https://www.interviewbit.com/problems/max-non-negative-subarray/
+**/
+vector<int> Solution::maxset(vector<int> &A) {
+    int n = A.size(),l=0,r=-1,lprev=-1,rprev=-1;
+    long long prevsum=0,currsum=0;
+    vector<int> v;
+    int i;
+    for(i=0;i<n;i++)
+        if(A[i]>=0)
+            break;
+    if(i==n)
+        return v;
+    for(int i=0;i<n;i++)
+        if(A[i]>=0){
+            currsum+=A[i];
+            r++;
+        }
+        else{
+            if(currsum>prevsum){
+                prevsum=currsum;
+                lprev=l;
+                rprev=r;
+               
+            }
+            else if(currsum==prevsum){
+                if((rprev-lprev)<(r-l)){
+                    lprev=l;
+                    rprev=r;
+                }
+            }
+            l=i+1;
+            r=i;
+            currsum=0;
+        }
+    l=currsum>prevsum?l:lprev;
+    r=currsum>prevsum?r:rprev;
+    for(int i=l;i<=r;i++)
+        v.push_back(A[i]);
+    return v;
+}
