@@ -1,0 +1,52 @@
+/**
+You are given a string, S, and a list of words, L, that are all of the same length.
+
+Find all starting indices of substring(s) in S that is a concatenation of each word in L exactly once and without any intervening characters.
+
+Example :
+S: "barfoothefoobarman"
+L: ["foo", "bar"]
+You should return the indices: [0,9].
+(order does not matter).
+
+problem link  : https://www.interviewbit.com/problems/substring-concatenation/
+
+**/
+void initalize_map(unordered_map<string,int> &map,const vector<string> &B){
+    for(int i = 0;i < B.size();i++)
+        if(map.find(B[i]) == map.end())
+            map[B[i]] = 1;
+        else
+            map[B[i]]++;
+}
+vector<int> Solution::findSubstring(string A, const vector<string> &B) {
+    vector<int> start;
+    int n = A.length(),start_index = -1,str_len = B[0].length();
+    unordered_map<string,int> map;
+    initalize_map(map,B);
+    for(int i = 0;i <= n;i++){
+        int k = i;
+        while(!map.empty()){
+            string temp;
+            for(int j = k;j<n&& j < k+str_len;j++)
+                temp.push_back(A[j]);
+            if(map.find(temp) != map.end()){
+                if(start_index == -1)
+                    start_index = i;
+                if(map[temp] > 1)
+                    map[temp]--;
+                else
+                    map.erase(temp);
+            }
+            else 
+                break;
+            k += str_len;
+        }
+        if(map.empty())
+            start.push_back(start_index);
+        start_index =-1;
+        map.clear();
+        initalize_map(map,B);
+    }
+    return start;
+}
