@@ -1,0 +1,59 @@
+/**
+Given an m x n matrix of 0s and 1s, if an element is 0, set its entire row and column to 0.
+Do it in place.
+
+Example
+Given array A as
+1 0 1
+1 1 1 
+1 1 1
+On returning, the array A should be :
+0 0 0
+1 0 1
+1 0 1
+
+problem link : https://www.interviewbit.com/problems/set-matrix-zeros/
+
+**/
+/*void make_minus_1(vector<vector<int> > &A,int row,int col){
+    int m=A.size(),n=A[0].size();
+    for(int i=0;i<n;i++)
+        if(A[row][i]!=0)
+            A[row][i]=-1;
+    for(int i=0;i<m;i++)
+        if(A[i][col]!=0)
+            A[i][col]=-1;
+}*/
+void Solution::setZeroes(vector<vector<int> > &A) {
+    int row=A.size(),col=A[0].size();
+    /*for(int i=0;i<row;i++)
+        for(int j=0;j<col;j++)
+            if(A[i][j]==0){
+                A[i][j]=-1;
+                make_minus_1(A,i,j);
+            }*/
+    bool r=false,c=false;
+    for(int i=0;i<row;i++)
+        if(A[i][0]==0)
+            c=true;
+    for(int j=0;j<col;j++)
+        if(A[0][j]==0)
+            r=true;
+    for(int i=1;i<row;i++)
+        for(int j=1;j<col;j++){
+            if(A[i][j]==0)
+                A[i][0]=0;
+            if(A[i][j]==0)
+                A[0][j]=0;
+        }
+     for(int i=1;i<row;i++)
+        for(int j=1;j<col;j++)
+            if(A[0][j]==0 || A[i][0]==0)
+                A[i][j]=0;
+    for(int i=0;i<row;i++)
+        if(c==true)
+            A[i][0]=0;
+    for(int j=0;j<col;j++)
+        if(r==true)
+            A[0][j]=0;
+}
